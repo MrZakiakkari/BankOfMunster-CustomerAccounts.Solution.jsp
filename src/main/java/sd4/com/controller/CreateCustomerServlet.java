@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sd4.com.controller;
 
 import java.io.IOException;
@@ -13,18 +8,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import sd4.com.model.Accounts;
-import sd4.com.model.AccountsDB;
 
 /**
  *
- * @author alan.ryan
+ * @author M.Zaki Al Akkari <https://github.com/MrZakiakkari>
  */
-@WebServlet(name = "ShowBalance", urlPatterns =
+@WebServlet(name = "CreateCustomerServlet", urlPatterns =
 {
-	"/ShowBalance"
+	"/CreateCustomer"
 })
-public class ShowBalance extends HttpServlet
+public class CreateCustomerServlet extends HttpServlet
 {
 
 	/**
@@ -38,40 +31,7 @@ public class ShowBalance extends HttpServlet
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.setContentType("text/html;charset=UTF-8");
-		String address;
-
-		try
-		{
-
-			Accounts customer = AccountsDB.getAccountByID(Integer.parseInt(request.getParameter("id")));
-
-			if (customer == null)
-			{
-				address = "/UnknownCustomer.jsp";
-			}
-			else if (customer.getBalance() < 0)
-			{
-				address = "/NegativeBalance.jsp";
-				request.setAttribute("badCustomer", customer);
-			}
-			else if (customer.getBalance() < 10000)
-			{
-				address = "/NormalBalance.jsp";
-				request.setAttribute("regularCustomer", customer);
-			}
-			else
-			{
-				address = "/HighBalance.jsp";
-				request.setAttribute("eliteCustomer", customer);
-			}
-
-		}//end try
-
-		catch (NumberFormatException ex)
-		{
-			address = "/Error.jsp";
-		}//end catch
+		String address = "/create-customer.jsp";
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);

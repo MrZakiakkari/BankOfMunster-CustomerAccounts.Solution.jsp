@@ -8,13 +8,18 @@
     </head>
     <body>
         <form name="getAccountByID" action="ShowBalance">
-            
+
             Enter Account ID <input type="text" name="id" value="" /> <input type="submit" value="Get Account" name="btn1" />
         </form>
-         <form name="getAllAccounts" action="ShowAllAccounts">
-             <br><br> 
-           <input type="submit" value="Get All Accounts" name="btn2" />
-           <br>
+		<form name="getAllAccounts" action="ShowAllAccounts">
+			<br><br> 
+			<input type="submit" value="Get All Accounts" name="btn2" />
+			<br>
         </form>
+		<form action="CreateCustomer" method="get">
+			<br><br> 
+			<input type="submit" value="Add an Accounts" name="createAccountButton" />
+			<br>
+		</form>
     </body>
 </html>

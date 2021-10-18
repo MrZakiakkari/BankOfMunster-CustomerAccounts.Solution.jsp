@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sd4.com.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,13 +12,13 @@ import sd4.com.model.AccountsDB;
 
 /**
  *
- * @author alan.ryan
+ * @author M.Zaki Al Akkari <https://github.com/MrZakiakkari>
  */
-@WebServlet(name = "ShowBalance", urlPatterns =
+@WebServlet(name = "CreateCustomerServlet", urlPatterns =
 {
-	"/ShowBalance"
+	"/handleCreateCustomer"
 })
-public class ShowBalance extends HttpServlet
+public class HandleCreateCustomerServlet extends HttpServlet
 {
 
 	/**
@@ -38,41 +32,17 @@ public class ShowBalance extends HttpServlet
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.setContentType("text/html;charset=UTF-8");
-		String address;
-
+		Accounts customer = buildCustomerFromForm(request);
 		try
 		{
-
-			Accounts customer = AccountsDB.getAccountByID(Integer.parseInt(request.getParameter("id")));
-
-			if (customer == null)
-			{
-				address = "/UnknownCustomer.jsp";
-			}
-			else if (customer.getBalance() < 0)
-			{
-				address = "/NegativeBalance.jsp";
-				request.setAttribute("badCustomer", customer);
-			}
-			else if (customer.getBalance() < 10000)
-			{
-				address = "/NormalBalance.jsp";
-				request.setAttribute("regularCustomer", customer);
-			}
-			else
-			{
-				address = "/HighBalance.jsp";
-				request.setAttribute("eliteCustomer", customer);
-			}
-
-		}//end try
-
-		catch (NumberFormatException ex)
+			AccountsDB.insert(customer);
+			//Go back to drill down with customer.getAccountNumber()
+		}
+		catch (Exception e)
 		{
-			address = "/Error.jsp";
-		}//end catch
-
+			//Go back to edit page with error message
+		}
+		String address = "";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);
 	}
@@ -118,5 +88,10 @@ public class ShowBalance extends HttpServlet
 	{
 		return "Short description";
 	}// </editor-fold>
-
+	private Accounts buildCustomerFromForm(HttpServletRequest request)
+	{
+		Accounts customer = new Accounts();
+		customer.setFirstName(request.getParameter("firstName"));
+		return customer;
+	}
 }
