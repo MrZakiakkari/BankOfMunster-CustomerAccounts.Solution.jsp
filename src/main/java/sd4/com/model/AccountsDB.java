@@ -7,6 +7,7 @@ package sd4.com.model;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 
@@ -54,7 +55,43 @@ public class AccountsDB {
     }
 	public static void insert(Accounts customer)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
+		 EntityManager em = DBUtil.getEMF().createEntityManager();
+        
+        EntityTransaction trans = em.getTransaction();
+        
+        try {
+            trans.begin();
+            em.persist(customer);
+            trans.commit();
+        }
+        catch(Exception ex) {
+            System.out.println(ex);
+        }
+        finally {
+            em.close();
+        }  
+        
+    }//end insertAuthor()
+	
+	public static void delete(Accounts customer)
+	{
+		 EntityManager em = DBUtil.getEMF().createEntityManager();
+        
+        EntityTransaction trans = em.getTransaction();
+        
+        try {
+            trans.begin();
+            em.remove(em.merge(customer));
+            trans.commit();
+        }
+        catch(Exception ex) {
+            System.out.println(ex);
+        }
+        finally {
+            em.close();
+        }  
+        
+    }//end insertAuthor()
+	
     
 }

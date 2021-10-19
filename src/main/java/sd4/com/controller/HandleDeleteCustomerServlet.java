@@ -16,9 +16,9 @@ import sd4.com.model.AccountsDB;
  */
 @WebServlet(name = "CreateCustomerServlet", urlPatterns =
 {
-	"/handleCreateCustomer"
+	"/handleDeleteCustomer"
 })
-public class HandleCreateCustomerServlet extends HttpServlet
+public class HandleDeleteCustomerServlet extends HttpServlet
 {
 
 	/**
@@ -32,23 +32,20 @@ public class HandleCreateCustomerServlet extends HttpServlet
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		Accounts customer = buildCustomerFromForm(request);
-		String Address;
+		int accountID = Integer.parseInt(request.getParameter("id"));
+		Accounts customer = AccountsDB.getAccountByID(accountID);
+     String address; 
 		try
 		{
-			AccountsDB.insert(customer);
-			int accountID = Integer.parseInt(request.getParameter("id"));
-				Accounts accounts = AccountsDB.getAccountByID(accountID);
-			Address= "/AccountDetails.jsp";
-			//Go back to drill down with customer.getAccountNumber()
+			AccountsDB.delete(customer);
+			//Go to messsage with customer.getAccountNumber()
 		}
 		catch (Exception e)
 		{
-			Address= "/create-customer.jsp";
-			System.err.println("Sorry, details entered incorrectly");
+			address = "/error.jsp";
 			//Go back to edit page with error message
 		}
-		String address = "";
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);
 	}
