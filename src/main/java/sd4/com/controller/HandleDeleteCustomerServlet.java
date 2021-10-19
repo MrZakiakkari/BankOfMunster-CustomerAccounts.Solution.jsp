@@ -34,7 +34,7 @@ public class HandleDeleteCustomerServlet extends HttpServlet
 	{
 		int accountID = Integer.parseInt(request.getParameter("id"));
 		Accounts customer = AccountsDB.getAccountByID(accountID);
-     String address; 
+     String Address; 
 		try
 		{
 			AccountsDB.delete(customer);
@@ -42,10 +42,10 @@ public class HandleDeleteCustomerServlet extends HttpServlet
 		}
 		catch (Exception e)
 		{
-			address = "/error.jsp";
+			Address = "/error.jsp";
 			//Go back to edit page with error message
 		}
-		
+		String address = "";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);
 	}

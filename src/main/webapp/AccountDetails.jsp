@@ -17,6 +17,7 @@
         </table>
         
         <a href="index.jsp">Home</a>
+		<a href="HandleDeleteCustomerServlet?id=${account}">Delete</a>
       
     </body>
 </html>
