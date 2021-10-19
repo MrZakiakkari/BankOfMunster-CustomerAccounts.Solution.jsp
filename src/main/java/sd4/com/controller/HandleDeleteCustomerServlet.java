@@ -14,7 +14,7 @@ import sd4.com.model.AccountsDB;
  *
  * @author M.Zaki Al Akkari <https://github.com/MrZakiakkari>
  */
-@WebServlet(name = "CreateCustomerServlet", urlPatterns =
+@WebServlet(name = "HandleDeleteCustomerServlet", urlPatterns =
 {
 	"/handleDeleteCustomer"
 })
@@ -32,20 +32,21 @@ public class HandleDeleteCustomerServlet extends HttpServlet
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		int accountID = Integer.parseInt(request.getParameter("id"));
-		Accounts customer = AccountsDB.getAccountByID(accountID);
-     String Address; 
+		int accountId = Integer.parseInt(request.getParameter("id"));
+		Accounts customer = AccountsDB.getAccountByID(accountId);
+		String address;
 		try
 		{
+			// /*should be using this in the view*/ request.setAttribute("message", customer.getAccountNumber() + "Deleted");
 			AccountsDB.delete(customer);
-			//Go to messsage with customer.getAccountNumber()
+			address = "/DeletedAccount.jsp";
 		}
 		catch (Exception e)
 		{
-			Address = "/error.jsp";
-			//Go back to edit page with error message
+			address = "/AccountDetails.jsp";
+			request.setAttribute("errorMessage", "Cannot Delete Customer");
+			request.setAttribute("account", customer);
 		}
-		String address = "";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);
 	}
@@ -91,10 +92,4 @@ public class HandleDeleteCustomerServlet extends HttpServlet
 	{
 		return "Short description";
 	}// </editor-fold>
-	private Accounts buildCustomerFromForm(HttpServletRequest request)
-	{
-		Accounts customer = new Accounts();
-		customer.setFirstName(request.getParameter("firstName"));
-		return customer;
-	}
 }

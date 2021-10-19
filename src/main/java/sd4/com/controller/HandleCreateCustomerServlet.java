@@ -14,7 +14,7 @@ import sd4.com.model.AccountsDB;
  *
  * @author M.Zaki Al Akkari <https://github.com/MrZakiakkari>
  */
-@WebServlet(name = "CreateCustomerServlet", urlPatterns =
+@WebServlet(name = "HandleCreateCustomerServlet", urlPatterns =
 {
 	"/handleCreateCustomer"
 })
@@ -33,22 +33,18 @@ public class HandleCreateCustomerServlet extends HttpServlet
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		Accounts customer = buildCustomerFromForm(request);
-		String Address;
+		String address;
 		try
 		{
 			AccountsDB.insert(customer);
-			int accountID = Integer.parseInt(request.getParameter("id"));
-				Accounts accounts = AccountsDB.getAccountByID(accountID);
-			Address= "/AccountDetails.jsp";
-			//Go back to drill down with customer.getAccountNumber()
+			address = "/AccountDetails.jsp";
+			request.setAttribute("account", customer);
 		}
 		catch (Exception e)
 		{
-			Address= "/create-customer.jsp";
-			System.err.println("Sorry, details entered incorrectly");
-			//Go back to edit page with error message
+			address = "/create-customer.jsp";
+			request.setAttribute("errorMessage", "Sorry, details entered incorrectly");
 		}
-		String address = "";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);
 	}
@@ -97,7 +93,11 @@ public class HandleCreateCustomerServlet extends HttpServlet
 	private Accounts buildCustomerFromForm(HttpServletRequest request)
 	{
 		Accounts customer = new Accounts();
-		customer.setFirstName(request.getParameter("firstName"));
+		customer.setFirstName(request.getParameter("firstname"));
+		customer.setLastName(request.getParameter("lastname"));
+		customer.setSortCode(request.getParameter("SortCode"));
+		customer.setAccountNumber(Integer.parseInt(request.getParameter("CustomerID")));
+		customer.setBalance(Integer.parseInt(request.getParameter("Balance")));
 		return customer;
 	}
 }
