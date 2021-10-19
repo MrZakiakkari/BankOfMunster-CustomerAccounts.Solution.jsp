@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sd4.com.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,14 +32,11 @@ public class ShowBalance extends HttpServlet
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.setContentType("text/html;charset=UTF-8");
 		String address;
-
 		try
 		{
-
-			Accounts customer = AccountsDB.getAccountByID(Integer.parseInt(request.getParameter("id")));
-
+			int accountId = Integer.parseInt(request.getParameter("id"));
+			Accounts customer = AccountsDB.getAccountByID(accountId);
 			if (customer == null)
 			{
 				address = "/UnknownCustomer.jsp";
@@ -65,13 +56,15 @@ public class ShowBalance extends HttpServlet
 				address = "/HighBalance.jsp";
 				request.setAttribute("eliteCustomer", customer);
 			}
-
-		}//end try
-
+		}
 		catch (NumberFormatException ex)
 		{
 			address = "/Error.jsp";
-		}//end catch
+		}
+		catch (Exception ex)
+		{
+			address = "/Error.jsp";
+		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);

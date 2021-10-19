@@ -1,20 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sd4.com.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import sd4.com.model.Accounts;
 import sd4.com.model.AccountsDB;
 
 /**
@@ -39,38 +31,19 @@ public class ShowAllAccounts extends HttpServlet
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.setContentType("text/html;charset=UTF-8");
-		try ( PrintWriter out = response.getWriter())
+		String address;
+		try
 		{
-			String address;
-
-			try
-			{
-
-				List<Accounts> list = AccountsDB.getAllAccounts();
-
-				if (list == null || list.isEmpty())
-				{
-					address = "/Error.jsp";
-				}
-				else
-				{
-
-					address = "/ShowAllAccounts.jsp";
-					request.setAttribute("list", list);
-				}
-
-			}//end try
-			catch (Exception ex)
-			{
-				address = "/Error.jsp";
-			}//end catch
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
-			dispatcher.forward(request, response);
+			address = "/ShowAllAccounts.jsp";
+			request.setAttribute("list", AccountsDB.getAllAccounts());
 		}
+		catch (Exception ex)
+		{
+			address = "/Error.jsp";
+		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
+		dispatcher.forward(request, response);
 	}
-
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
@@ -112,5 +85,4 @@ public class ShowAllAccounts extends HttpServlet
 	{
 		return "Short description";
 	}// </editor-fold>
-
 }

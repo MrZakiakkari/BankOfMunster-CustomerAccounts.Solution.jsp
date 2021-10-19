@@ -6,7 +6,6 @@
 package sd4.com.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,40 +35,31 @@ public class AccountDrillDown extends HttpServlet
 	 * @throws ServletException if a servlet-specific error occurs
 	 * @throws IOException if an I/O error occurs
 	 */
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.setContentType("text/html;charset=UTF-8");
-		try ( PrintWriter out = response.getWriter())
+		String address;
+		try
 		{
-			String address;
-			int accountID = 0;
-			try
-			{
-				accountID = Integer.parseInt(request.getParameter("id"));
-			}
-			catch (Exception ex)
-			{
-				address = "/UnknownCustomer.jsp";
-			}
-
-			Accounts a = AccountsDB.getAccountByID(accountID);
-
-			if (a == null)
+			int accountId = Integer.parseInt(request.getParameter("id"));
+			Accounts account = AccountsDB.getAccountByID(accountId);
+			if (account == null)
 			{
 				address = "/UnknownCustomer.jsp";
 			}
 			else
 			{
+				request.setAttribute("account", account);
 				address = "/AccountDetails.jsp";
 			}
-
-			request.setAttribute("account", a);
-			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
-			dispatcher.forward(request, response);
 		}
-	}
+		catch (Exception ex)
+		{
+			address = "/UnknownCustomer.jsp";
+		}
 
+		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
+		dispatcher.forward(request, response);
+	}
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
@@ -111,5 +101,4 @@ public class AccountDrillDown extends HttpServlet
 	{
 		return "Short description";
 	}// </editor-fold>
-
 }

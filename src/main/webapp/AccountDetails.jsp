@@ -17,8 +17,7 @@
             <tr><td>Balance</td><td>${account.balance}</td></TR>
         </table>
 
-        <a href="index.jsp">Home</a>
-		<a href="handleDeleteCustomer?id=${account.accountNumber}">Delete</a>
+        <a href="index.jsp">Home</a> | <a href="handleDeleteCustomer?id=${account.accountNumber}">Delete</a> | <a href="AdjustAccount?id=${account.accountNumber}">Adjust Account</a>
 		<c:if test="${not empty errorMessage}">
 			<p><c:out value="${errorMessage}"/></p>
 		</c:if>

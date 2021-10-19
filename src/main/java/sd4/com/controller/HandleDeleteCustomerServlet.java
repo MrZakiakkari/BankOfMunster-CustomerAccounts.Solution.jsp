@@ -32,11 +32,11 @@ public class HandleDeleteCustomerServlet extends HttpServlet
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		int accountId = Integer.parseInt(request.getParameter("id"));
-		Accounts customer = AccountsDB.getAccountByID(accountId);
 		String address;
 		try
 		{
+			int accountId = Integer.parseInt(request.getParameter("id"));
+			Accounts customer = AccountsDB.getAccountByID(accountId);
 			// /*should be using this in the view*/ request.setAttribute("message", customer.getAccountNumber() + "Deleted");
 			AccountsDB.delete(customer);
 			address = "/DeletedAccount.jsp";
@@ -45,7 +45,6 @@ public class HandleDeleteCustomerServlet extends HttpServlet
 		{
 			address = "/AccountDetails.jsp";
 			request.setAttribute("errorMessage", "Cannot Delete Customer");
-			request.setAttribute("account", customer);
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request, response);

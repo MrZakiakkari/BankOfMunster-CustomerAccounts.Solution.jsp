@@ -97,7 +97,7 @@ public class HandleCreateCustomerServlet extends HttpServlet
 		customer.setLastName(request.getParameter("lastname"));
 		customer.setSortCode(request.getParameter("SortCode"));
 		customer.setAccountNumber(Integer.parseInt(request.getParameter("CustomerID")));
-		customer.setBalance(Integer.parseInt(request.getParameter("Balance")));
+		customer.setBalance(Double.parseDouble(request.getParameter("Balance")));
 		return customer;
 	}
 }
